@@ -1,3 +1,5 @@
+<img width="100%" alt="Freepak banner" src="https://github.com/user-attachments/assets/d5195cbc-c38a-4ffe-95e3-8b1bc4e1d073" />
+
 # freepak
 > flatpak sandbox removal tool
 </br>
