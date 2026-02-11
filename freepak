@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+  echo "Usage: freepak APPID"
+  exit 1
+fi
+
+APPID="$1"
+
+echo "============================================================"
+echo " freepak v1.0.0 - flatpak sandbox removal tool"
+echo "============================================================"
+echo
+echo "You are about to apply EXTREMELY broad permissions to:"
+echo "  $APPID"
+echo
+echo "This will allow the app to:"
+echo "  - Read/write your entire home system (--filesystem=host)"
+echo "  - Access all devices (USB, GPU, input, etc.) (--device=all)"
+echo "  - Use network + IPC"
+echo "  - Access major desktop/audio/bus sockets"
+echo
+echo "SECURITY WARNING:"
+echo "This effectively removes most of Flatpak's sandboxing."
+echo "If the app is malicious or compromised, it could steal files,"
+echo "log keystrokes (via device access), access private data, or"
+echo "attack other services on your machine."
+echo
+echo -n "Are you sure you want to continue? (Y/N): "
+read -r ANSWER
+
+case "$ANSWER" in
+  Y|y)
+    echo
+    echo "Applying overrides to $APPID..."
+    ;;
+  *)
+    echo
+    echo "Cancelled."
+    exit 0
+    ;;
+esac
+
+flatpak override --user "$APPID" \
+  --filesystem=host \
+  --device=all \
+  --share=network \
+  --share=ipc \
+  --socket=x11 \
+  --socket=wayland \
+  --socket=pulseaudio \
+  --socket=session-bus \
+  --socket=system-bus \
+  --socket=fallback-x11 \
+  --socket=ssh-auth \
+  --socket=pcsc \
+  --socket=cups \
+  --socket=gpg-agent \
+  --socket=inherit-wayland-socket \
+  --allow=devel \
+  --allow=multiarch
+
+echo
+echo "Done."
+echo "You can view current overrides with:"
+echo "  flatpak override --show $APPID"
