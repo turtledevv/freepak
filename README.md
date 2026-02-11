@@ -1,7 +1,8 @@
 # freepak
 > flatpak sandbox removal tool
+</br>
 
-> ![IMPORTANT]
+> [!CAUTION]
 > Be careful, this is a powerful tool! Sandboxing exists for a reason, a SECURITY reason. Removing these measures should only be used on apps you trust!
 
 Tired of Flatpak sandboxing your applications to hell?</br>
